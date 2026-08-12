@@ -3,6 +3,30 @@
   "notes": "Manual-approval queue. Nothing publishes on its own — the workflow has no cron. Publish with: Actions -> Run workflow -> now = <id>. status: hold (needs approval) | posted. publish_at is a planning note only.",
   "posts": [
     {
+      "id": "intro-hello",
+      "slot": "INTRO — what GenWear is",
+      "file": "intro1_hello.jpg",
+      "caption": "Most apparel brands shoot 40 SKUs when the collection has 70. The budget runs out, and the rest go live with whatever photo exists.\n\nWe started GenWear to remove that ceiling.\n\nIt's an AI product photography studio for apparel brands. You send a product photo; we send back a campaign — on-model, ghost mannequin, multiple backdrops, cropped for your PDP and your ad sets. No model booking, no studio hold, no shoot date your whole drop calendar quietly depends on.\n\nThis account is going to be mostly proof. Crops you can zoom into, the garments we get right, and the ones we still don't.\n\nWhich SKU in your catalogue has the worst photos right now?\n\n— GenWear",
+      "first_comment": "#catalogshoot #ghostmannequin #productphotographyindia #ecommercephotography #apparelbrand #d2cindia #dtcbrands #aiphotoshoot #fashiontech #indianfashion #fashionbusiness #startupindia #productphotography #fashionphotography",
+      "status": "hold"
+    },
+    {
+      "id": "intro-closer",
+      "slot": "INTRO — the standard",
+      "file": "intro2_closer.jpg",
+      "caption": "Every AI photo tool looks perfect at thumbnail size. Zoom to 200% and most of them fall apart.\n\nSo here's the crop nobody asks for: the placket of a generated gingham shirt, blown up until you can count threads.\n\nWarp and weft visible in the weave. Stitch tension around the buttonhole. The mother-of-pearl button catching light the way a real one does. Nothing smeared into mush where the detail got difficult.\n\nThat's the standard we hold. If a garment doesn't survive this crop, it doesn't go on your product page — and we'd rather tell you that before you pay than after.\n\nPinch and zoom. Tell us what you find.\n\n— GenWear",
+      "first_comment": "#catalogshoot #ecommercephotography #productphotographyindia #shirting #menswearindia #apparelbrand #d2cindia #dtcbrands #aiphotoshoot #fashiontech #textiledesign #qualitycontrol #productphotography #fashionphotography",
+      "status": "hold"
+    },
+    {
+      "id": "intro-open",
+      "slot": "INTRO — the offer",
+      "file": "intro3_open.jpg",
+      "caption": "The fastest way to judge an AI photoshoot is to hand it your worst SKU.\n\nSign up, spend the free credits, and a five-pose set comes back in about five minutes — front, back, profile, three-quarter — from one product photo already sitting in your Drive.\n\nPrefer we handle it? Courier the garment instead and the full set comes back within a day. Real fabric gives us better drape and weave reference, so the difficult pieces come out stronger that way.\n\nDon't start with your easiest product. Start with the busy print, the sequinned piece, the white-on-white that never photographed right.\n\nWhich one is it? Tell us in the comments or DM the SKU.\n\n— GenWear",
+      "first_comment": "#catalogshoot #ecommercephotography #productphotographyindia #apparelbrand #d2cindia #dtcbrands #aiphotoshoot #fashiontech #ecommerceindia #fashionbusiness #startupindia #linenshirt #productphotography #indianfashion",
+      "status": "hold"
+    },
+    {
       "id": "print-proof",
       "slot": "PROOF — hero print test",
       "publish_at": "2026-08-18 10:00",
