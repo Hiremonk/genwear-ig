@@ -1,36 +1,64 @@
-name: GenWear daily Instagram post
+name: GenWear Instagram publisher
 
+# Manual only. No cron — nothing publishes unless you trigger it.
+# To re-enable automatic posting later, add back:
+#   schedule:
+#     - cron: "30 * * * *"      # hourly; publishes whatever queue.json says is due
 on:
-  schedule:
-    - cron: "30 4 * * *"
   workflow_dispatch:
     inputs:
-      day:
-        description: "Force a specific campaign day (1-11). Blank = today's."
+      now:
+        description: "Post ID to publish immediately (blank = whatever is due)"
         required: false
+      list:
+        description: "Set to 1 to just print the queue"
+        required: false
+        default: "0"
       dry_run:
         description: "Set to 1 to preview without publishing"
         required: false
         default: "0"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: genwear-publish
+  cancel-in-progress: false
 
 jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Publish today's post
+
+      - name: Publish
         env:
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
           ASSET_BASE_URL: ${{ vars.ASSET_BASE_URL }}
-          CAMPAIGN_START: ${{ vars.CAMPAIGN_START }}
           DRY_RUN: ${{ github.event.inputs.dry_run }}
         run: |
-          if [ -n "${{ github.event.inputs.day }}" ]; then
-            python publish_daily.py --day "${{ github.event.inputs.day }}"
+          if [ "${{ github.event.inputs.list }}" = "1" ]; then
+            python publish.py --list
+          elif [ -n "${{ github.event.inputs.now }}" ]; then
+            python publish.py --now "${{ github.event.inputs.now }}"
           else
-            python publish_daily.py
+            python publish.py
+          fi
+
+      - name: Commit queue state
+        run: |
+          if [ -n "$(git status --porcelain queue.json)" ]; then
+            git config user.name "genwear-bot"
+            git config user.email "actions@github.com"
+            git add queue.json
+            git commit -m "publish: update queue state [skip ci]"
+            git push
+          else
+            echo "queue.json unchanged"
           fi

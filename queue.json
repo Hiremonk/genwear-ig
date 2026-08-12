@@ -1,18 +1,21 @@
 {
   "timezone": "Asia/Kolkata",
-  "post_time_local": "10:00",
-  "notes": "11-day launch run. Reels sit at day 2 and day 6 — they carry the reach, the stills carry the credibility.",
+  "notes": "Manual-approval queue. Nothing publishes on its own — the workflow has no cron. Publish with: Actions -> Run workflow -> now = <id>. status: hold (needs approval) | posted. publish_at is a planning note only.",
   "posts": [
     {
-      "day": 1,
+      "id": "print-proof",
       "slot": "PROOF — hero print test",
+      "publish_at": "2026-08-18 10:00",
+      "status": "hold",
       "file": "day1_mon_proof-print.jpg",
       "caption": "We picked the print our own team was most nervous about.\n\nDense small-scale botanical repeat. Three colours. The kind of pattern that turns into mush the second a model moves — or the second an AI tool tries to reproduce it.\n\nGenWear held it. Weave visible. Print registration intact. Seam-to-seam continuity where the sleeve meets the body.\n\nHere's the standard we hold ourselves to: if the garment survives a 200% crop, it's good enough for your product page. If it doesn't, we don't ship it.\n\nZoom all the way in. That's the whole pitch.\n\n— GenWear",
       "first_comment": "#genwear #aiphotoshoot #fashionphotography #d2cindia #apparelbrand #productphotography #ecommercephotography #catalogshoot #indianfashion #dtcbrands #fashiontech #printdesign #textiledesign #brandbuilding #fashionmarketing"
     },
     {
-      "day": 2,
+      "id": "reel-upload",
       "slot": "REEL — upload / result",
+      "publish_at": "2026-08-19 10:00",
+      "status": "hold",
       "file": "reel1_before-after.mp4",
       "media_type": "REELS",
       "cover": "day1_mon_proof-print.jpg",
@@ -20,29 +23,37 @@
       "first_comment": "#genwear #aiphotoshoot #beforeandafter #d2cindia #apparelbrand #productphotography #catalogshoot #fashiontech #indianfashion #kurta #menswear #ecommerceindia #dtcbrands #fashionreels #reels"
     },
     {
-      "day": 3,
+      "id": "zari-proof",
       "slot": "PROOF — zari stress test",
+      "publish_at": "2026-08-20 10:00",
+      "status": "hold",
       "file": "day3_wed_proof-zari.jpg",
       "caption": "Everyone told us occasionwear would break it.\n\nFair. Zari is the hardest surface in Indian apparel — metallic thread that changes colour with the light, sequins that throw specular highlights, dabka work with actual physical depth. Get it slightly wrong and it reads as printed-on rather than stitched-on.\n\nSo we ran a hand-embroidered emerald lehenga through it. Every bead sits where the karigar put it. The gold behaves like metal, not like a gold-coloured JPEG.\n\nIf you sell lehengas, shararas, or anything with hand-work, this is the test that matters. Ask any vendor to show you this crop before you sign.\n\n— GenWear",
       "first_comment": "#genwear #occasionwear #lehenga #zari #indianwear #bridalwear #ethnicwear #aiphotoshoot #d2cindia #apparelbrand #handembroidery #karigar #fashiontech #productphotography #luxuryfashion"
     },
     {
-      "day": 4,
+      "id": "street-editorial",
       "slot": "EDITORIAL — location range",
+      "publish_at": "2026-08-21 10:00",
+      "status": "hold",
       "file": "day4_thu_editorial-street.jpg",
       "caption": "Monday it was a studio shirt. Thursday it's a Bandra shirt.\n\nSame SKU. Same print. Different sun, different wall, different energy entirely.\n\nHere's the thing nobody says out loud: your catalogue isn't limited by your creative direction. It's limited by the one location your budget could cover on shoot day. Everything after that is compromise dressed up as a decision.\n\nGenWear removes the location line from the budget. Studio, street, rooftop, Jaipur haveli — pick the backdrop the garment actually deserves.\n\n— GenWear",
       "first_comment": "#genwear #streetstyle #fashionphotography #mumbaifashion #bandra #menswear #aifashion #d2cindia #apparelbrand #lookbook #ecommerce #contentcreation #indianfashion #styling #campaignshoot"
     },
     {
-      "day": 5,
+      "id": "moods-editorial",
       "slot": "EDITORIAL — mood range",
+      "publish_at": "2026-08-22 10:00",
+      "status": "hold",
       "file": "day2_tue_editorial-moods.jpg",
       "caption": "One shirt. Six completely different campaigns.\n\nMost brands shoot a garment once, get one mood, and live with it for the whole season. Not because they want to — because a second shoot means a second budget.\n\nGenWear takes the same physical piece and re-lights it, re-casts it, re-locates it. Minimal luxe for the website. Street for Reels. Festive for the October push. Same garment, same fit, same fabric behaviour.\n\nYou're not choosing a look anymore. You're choosing all of them.\n\n— GenWear",
       "first_comment": "#genwear #fashioneditorial #moodboard #lookbook #aifashion #d2cindia #apparelbrand #fashioncampaign #creativedirection #ecommerce #indianfashion #contentstrategy #brandaesthetic #menswear #styling"
     },
     {
-      "day": 6,
+      "id": "reel-the-math",
       "slot": "REEL — the math",
+      "publish_at": "2026-08-23 10:00",
+      "status": "hold",
       "file": "reel2_the-math.mp4",
       "media_type": "REELS",
       "cover": "day6_sat_cost.jpg",
@@ -50,36 +61,46 @@
       "first_comment": "#genwear #d2cindia #apparelbrand #ecommerceindia #fashionbusiness #startupindia #founderlife #catalogshoot #productphotography #costsaving #aifashion #indianfashion #fashionreels #reels #dtcbrands"
     },
     {
-      "day": 7,
+      "id": "honesty-proof",
       "slot": "PROOF — the honesty post",
+      "publish_at": "2026-08-24 10:00",
+      "status": "hold",
       "file": "day5_fri_proof-honesty.jpg",
       "caption": "Nobody selling AI photography posts the failures. We're going to.\n\nThree places GenWear still isn't good enough:\n\n1. Heavy sheer layering. Organza over organza, where you can see two prints through each other. We get close. Close isn't shippable.\n\n2. Tiny logo text. A woven label under 6mm reads as a smudge. We composite the real label back in rather than pretend.\n\n3. Hands actively gripping fabric. Fingers plus drape plus tension is the hardest problem in the category, and anyone claiming they've solved it is showing you their best frame out of forty.\n\nWe flag these before you sign, not after you've paid. That's the difference between a vendor and a tool.\n\n— GenWear",
       "first_comment": "#genwear #buildinpublic #aifashion #honestmarketing #d2cindia #apparelbrand #fashiontech #productphotography #ecommerce #startupindia #transparency #founderlife #indianfashion #catalogshoot #qualitycontrol"
     },
     {
-      "day": 8,
+      "id": "process",
       "slot": "PROCESS — how it works",
+      "publish_at": "2026-08-25 10:00",
+      "status": "hold",
       "file": "day8_process.jpg",
       "caption": "The most common question in our DMs: what do you actually need from us?\n\nA product photo. That's it — the flat lay or hanger shot already sitting in your Drive is enough to start.\n\nSign up, use the free credits, and a five-pose set comes back in about five minutes. On-model, ghost mannequin, multiple backdrops, sized for your PDP and your ad sets.\n\nIf you'd rather we handle it, courier the physical garment instead. Real fabric gives us better drape and weave reference, and we deliver the finished set within a day.\n\nPhotos are enough. The garment is better. Both work.\n\n— GenWear",
       "first_comment": "#genwear #howitworks #aiphotoshoot #d2cindia #apparelbrand #productphotography #ecommerceindia #catalogshoot #fashiontech #dtcbrands #ghostmannequin #flatlay #indianfashion #startupindia #brandbuilding"
     },
     {
-      "day": 9,
+      "id": "range",
       "slot": "RANGE — categories",
+      "publish_at": "2026-08-26 10:00",
+      "status": "hold",
       "file": "day9_range.jpg",
       "caption": "Menswear. Womenswear. Ethnic. Athleisure. Kidswear.\n\nMost brands run three or four different photographers across categories, because the person who shoots your lehengas is rarely the person who shoots your joggers. Then the catalogue looks like four brands stapled together.\n\nOne pipeline across the whole range means one light, one grade, one standard. Your feed finally reads as a single brand instead of a collection of shoot days.\n\nWhat's the category you've never been happy with the photos for? Tell us in the comments.\n\n— GenWear",
       "first_comment": "#genwear #athleisure #activewear #womenswear #menswear #ethnicwear #kidswear #d2cindia #apparelbrand #productphotography #catalogshoot #aifashion #ecommerceindia #indianfashion #dtcbrands"
     },
     {
-      "day": 10,
+      "id": "cost-static",
       "slot": "THE MATH — static",
+      "publish_at": "2026-08-27 10:00",
+      "status": "hold",
       "file": "day6_sat_cost.jpg",
       "caption": "₹1.8L and three weeks, or five minutes.\n\nWe keep coming back to this because it's the only number that changes a founder's mind.\n\nIt isn't really about the money. It's about what the money forces you into: shooting 40 SKUs when the collection has 70, because that's where the budget ran out. Reusing last season's images for the pieces that didn't make the cut. Launching a drop with three products that have no model shots at all.\n\nThose 30 unshot SKUs are the actual cost of a studio day. Not the invoice.\n\n— GenWear",
       "first_comment": "#genwear #d2cindia #apparelbrand #ecommerceindia #fashionbusiness #startupindia #founderlife #catalogshoot #productphotography #costsaving #aifashion #indianfashion #kurta #ethnicwear #dtcbrands"
     },
     {
-      "day": 11,
+      "id": "open-call",
       "slot": "OPEN CALL — the ask",
+      "publish_at": "2026-08-28 10:00",
+      "status": "hold",
       "file": "day7_sun_cta.jpg",
       "caption": "Open call, and we'd rather you make it difficult.\n\nPick the one SKU your last shoot handled worst. The busy print. The sequinned piece. The white-on-white that never photographed right. The one you quietly stopped pushing because the images didn't do it justice.\n\nSend us that one. Free credits, five poses, roughly five minutes.\n\nThen zoom in as far as your screen goes and judge us on the crop, not the pitch.\n\nDM us the SKU, or drop a comment and we'll come to you.\n\n— GenWear",
       "first_comment": "#genwear #aiphotoshoot #d2cindia #apparelbrand #fashiontech #ecommerceindia #productphotography #catalogshoot #indianfashion #dtcbrands #freetrial #opencall #fashionbusiness #startupindia #brandbuilding"

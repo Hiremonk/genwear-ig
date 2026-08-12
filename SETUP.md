@@ -1,139 +1,126 @@
-# GenWear — automated daily Instagram posting
+# GenWear Instagram publisher
 
-Once wired up, one asset goes out at **10:00 IST every day** for 11 days — 9
-posters and 2 Reels — with caption and first-comment hashtags, hands-off.
+A queue, not a fixed calendar. Every post carries its own `publish_at` time and
+its own status, so you can:
 
-This uses the **Instagram API with Instagram Login**: you connect the
-Instagram account directly. No Facebook Page, no Business Manager, no System
-Users. Setup is ~20 minutes.
+- **schedule** — set a time, the hourly cron publishes it when it comes due
+- **post now** — fire any post immediately, whatever its scheduled time says
+- **hold** — set `"status": "hold"` and it never publishes until you change it
 
-**Why GitHub Actions:** the API needs a public HTTPS URL for every image, and
-you need a daily cron. A public GitHub repo provides both for free
-(`raw.githubusercontent.com` hosts the assets, Actions runs the schedule).
-
----
-
-## Before you start
-
-The Instagram account must be **Professional** (Business or Creator):
-Instagram app → Settings → Account type and tools → Switch to professional
-account → **Business**.
-
-## Step 1 — Create the GitHub repo
-
-1. Create a **public** repo called `genwear-ig` (public is required — Meta's
-   servers fetch the images with no auth; these are posts you're publishing
-   anyway, and the tokens live in GitHub Secrets, never in the repo).
-2. Unzip `genwear-ig-repo.zip` and upload everything, keeping the layout:
-
-```
-genwear-ig/
-├── assets/                      ← 9 posters + 2 reels
-├── .github/workflows/daily-post.yml
-├── publish_daily.py
-├── schedule.json
-└── SETUP.md
-```
-
-If you use the web UI ("Add file → Upload files"), upload the `.github`
-folder too — drag the whole unzipped folder in so the workflow file lands at
-`.github/workflows/daily-post.yml`.
-
-## Step 2 — Create the Meta app and connect the account
-
-1. [developers.facebook.com](https://developers.facebook.com) → **My Apps** →
-   **Create App** → use case: **Other** → type: **Business**.
-2. On the app dashboard, find the **Instagram** product → **Set up**.
-3. Choose **API setup with Instagram login**.
-4. Under **Generate access tokens** → **Add account** → log in with the
-   GenWear Instagram credentials and authorise.
-5. The dashboard now shows the account with its **Instagram user ID**
-   (numeric) and a **Generate token** button. Click it, approve the
-   permissions, and copy the token — it's long-lived (60 days).
-
-That's both values you need: `IG_USER_ID` and `IG_ACCESS_TOKEN`.
-
-In App settings → Permissions, the ones in play are
-`instagram_business_basic`, `instagram_business_content_publish`, and
-`instagram_business_manage_comments` (for the first-comment hashtags). For
-posting to your own account in Development mode, no App Review is needed.
-
-## Step 3 — Configure the repo
-
-Repo → **Settings → Secrets and variables → Actions**.
-
-Secrets (New repository secret):
-
-| Name | Value |
-|---|---|
-| `IG_USER_ID` | numeric ID from Step 2 |
-| `IG_ACCESS_TOKEN` | token from Step 2 |
-
-Variables (Variables tab → New repository variable):
-
-| Name | Value |
-|---|---|
-| `ASSET_BASE_URL` | `https://raw.githubusercontent.com/<your-username>/genwear-ig/main/assets/` |
-| `CAMPAIGN_START` | the day you want Day 1 to land, e.g. `2026-08-17` |
-
-Open the `ASSET_BASE_URL` + `day1_mon_proof-print.jpg` in a browser — if the
-image loads, Meta can fetch it too.
-
-## Step 4 — Test, then go live
-
-Repo → **Actions** tab → **GenWear daily Instagram post** → Run workflow:
-
-1. Run with `dry_run = 1` → the log shows the caption, nothing publishes.
-2. Run with `day = 1`, `dry_run = 0` → publishes Day 1 for real. Check the
-   grid, zoom in, read the caption and first comment.
-3. Happy? Delete the test post on Instagram (or keep it and set
-   `CAMPAIGN_START` to today so Day 2 fires tomorrow). The cron takes over
-   from `CAMPAIGN_START`.
+Nothing is tied to a campaign start date, and nothing double-posts: the
+workflow commits the updated `queue.json` back after each successful publish.
 
 ---
 
-## How it behaves
+## Daily use
 
-- **04:30 UTC / 10:00 IST daily** — computes the campaign day from
-  `CAMPAIGN_START`, publishes that asset.
-- **Duplicate guard** — if anything already went out today, it skips instead
-  of double-posting (`--force` overrides).
-- **Reels** — publish as Reels with `share_to_feed`, cover thumbnail from
-  the `cover` field. These files carry a subtle sound-design track (ambient +
-  cues) since API posts can't use Instagram's music library.
-- **Hashtags** — go in as the first comment; the caption stays clean.
-- **After day 11** — exits with "Campaign finished". Extend `schedule.json`
-  + drop new files in `assets/` to continue.
+### See what's in the queue
 
-## Token expiry — the one maintenance task
+Actions → **GenWear Instagram publisher** → Run workflow → `list = 1`.
+Prints every post with status and time. `DUE` means the cron will take it on
+its next hourly run.
 
-Instagram-Login tokens last **60 days** and are refreshable. The campaign is
-11 days, so you're covered — but if you keep the pipeline running, refresh
-before day ~55 with:
+### Post something right now
 
+Run workflow → put the post's **id** in the `now` field (e.g. `zari-proof`) →
+Run. Live in about 30 seconds; Reels take a little longer to transcode.
+
+Works whether the post was scheduled for next week or has no time at all.
+
+### Schedule something
+
+Edit `queue.json`, set `publish_at`, commit. Format is `YYYY-MM-DD HH:MM` in
+IST — or just `YYYY-MM-DD`, which defaults to 10:00.
+
+```json
+{
+  "id": "fabric-macro",
+  "slot": "Editorial — fabric study",
+  "publish_at": "2026-08-15 18:30",
+  "status": "scheduled",
+  "file": "fabric_macro.jpg",
+  "caption": "…",
+  "first_comment": "#genwear …"
+}
 ```
-curl "https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token=<current-token>"
-```
 
-…and paste the returned token into the `IG_ACCESS_TOKEN` secret. (Refresh
-only works on tokens that are at least 24h old and not yet expired.)
+### Pause everything
+
+Change the dates, or set posts to `"status": "hold"`. To stop the cron
+entirely: Actions → ··· → **Disable workflow**.
+
+---
+
+## Adding new content
+
+1. Drop the JPG/MP4 into `assets/` (drag onto the GitHub page, commit).
+2. Add an entry to `queue.json` with a matching `file`.
+3. Either set `publish_at`, or leave it out and fire it with `now` when ready.
+
+A post with no `publish_at` will never auto-publish — it only goes out on
+demand. That's the safest way to stage content you haven't decided on.
+
+---
+
+## Media requirements
+
+| | |
+|---|---|
+| Feed image | JPG, 4:5 (1080×1350) or 1:1 |
+| Reel | MP4 h264, 9:16 (1080×1920), 3–90s |
+| Caption | under 2,200 characters |
+| Hashtags | go in `first_comment`, not the caption |
+
+Reels published through the API can't use Instagram's music library — that's
+app-only. The two campaign reels carry their own sound design instead. If you
+want trending audio on something, post it manually from the phone.
+
+---
+
+## First-time setup
+
+Already done for this repo, kept here for reference.
+
+**Secrets** (Settings → Secrets and variables → Actions → Secrets):
+
+| Name | Value |
+|---|---|
+| `IG_USER_ID` | `17841434769252266` |
+| `IG_ACCESS_TOKEN` | Instagram-Login token |
+
+**Variables** (same page, Variables tab):
+
+| Name | Value |
+|---|---|
+| `ASSET_BASE_URL` | `https://raw.githubusercontent.com/Hiremonk/genwear-ig/main/assets/` |
+
+The repo must stay **public** — Meta fetches media over plain HTTPS with no
+auth. Tokens live in Secrets and are never in the repo.
+
+Connected account: **@genwear.studios**, via Instagram API with Instagram
+Login (no Facebook Page needed). The account is an accepted Instagram Tester
+on the *GenWear Publisher* app (App ID `2029006404395712`).
+
+---
 
 ## When something breaks
 
 | Symptom | Cause | Fix |
 |---|---|---|
-| `image_url` / `video_url` invalid (#100) | Repo private or URL typo | Make repo public; open the raw URL in a browser |
-| Token error (#190) | Token expired (60 days) or account re-secured | Regenerate in the app dashboard, update the secret |
-| Container stuck `IN_PROGRESS` | Reel transcoding | Stills retry 20×, Reels 40× — rare at these file sizes |
-| First comment missing | Comments permission not granted | Re-generate token approving all permissions; posts still succeed without it |
-| Nothing posts, no error | GitHub paused the cron | Schedules pause after 60 days without commits — push anything |
+| "Nothing due" but you expected a post | `publish_at` in the future, or status isn't `scheduled` | Run with `list = 1` to see actual state |
+| `(#100) image_url` invalid | Repo went private, or filename typo | Confirm the raw URL loads in a browser |
+| `(#190)` token error | Token expired (60 days) | Regenerate in the Meta app dashboard, update the secret |
+| Container stuck `IN_PROGRESS` | Reel transcoding | Stills retry 20×, Reels 40× |
+| Cron stopped firing | GitHub pauses schedules after 60 days of no commits | Push anything |
+| Queue state didn't save | Workflow lacks write permission | `permissions: contents: write` must be in the workflow |
 
-## Changing the schedule
+### Token refresh
 
-Cron lives in `.github/workflows/daily-post.yml`, in UTC:
+Instagram-Login tokens last 60 days and are refreshable:
 
-```yaml
-- cron: "30 4 * * *"   # 10:00 IST daily
-- cron: "30 12 * * *"  # 18:00 IST
-- cron: "30 4 * * 1-5" # weekdays only
 ```
+curl "https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token=<current>"
+```
+
+Paste the result into the `IG_ACCESS_TOKEN` secret. Only works on tokens at
+least 24h old and not yet expired.
