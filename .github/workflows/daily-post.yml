@@ -1,10 +1,17 @@
 name: GenWear Instagram publisher
 
-# Manual only. No cron — nothing publishes unless you trigger it.
-# To re-enable automatic posting later, add back:
-#   schedule:
-#     - cron: "30 * * * *"      # hourly; publishes whatever queue.json says is due
+# Two ways in:
+#   1. workflow_dispatch — you trigger it, `now` publishes a specific post.
+#   2. the cron below — fires daily at 11:00 IST and publishes ONLY posts whose
+#      status is "scheduled" and whose publish_at has arrived. Anything on
+#      "hold" is invisible to it, so adding a date is not enough to go live —
+#      the status flip is the approval.
+# Runs twice, 15 min apart, because GitHub cron can lag. Once a post publishes
+# its status becomes "posted" and is committed back, so the second run no-ops.
 on:
+  schedule:
+    - cron: "30 5 * * *"   # 11:00 IST
+    - cron: "45 5 * * *"   # 11:15 IST — retry if the first was delayed
   workflow_dispatch:
     inputs:
       now:

@@ -3,7 +3,8 @@
 A queue, not a fixed calendar. Every post carries its own `publish_at` time and
 its own status, so you can:
 
-- **schedule** — set a time, the hourly cron publishes it when it comes due
+- **schedule** — set `publish_at` **and** flip status to `scheduled`; the daily
+  11:00 IST cron takes it from there. A date alone does nothing.
 - **post now** — fire any post immediately, whatever its scheduled time says
 - **hold** — set `"status": "hold"` and it never publishes until you change it
 
@@ -46,8 +47,17 @@ IST — or just `YYYY-MM-DD`, which defaults to 10:00.
 
 ### Pause everything
 
-Change the dates, or set posts to `"status": "hold"`. To stop the cron
-entirely: Actions → ··· → **Disable workflow**.
+Set posts back to `"status": "hold"` — that alone is enough, the cron ignores
+them. To stop the cron entirely: Actions → ··· → **Disable workflow**.
+
+### About the cron
+
+Runs at 05:30 and 05:45 UTC (11:00 / 11:15 IST). Two runs because GitHub's
+scheduler can lag by 10–30 minutes under load; the second is a no-op if the
+first succeeded. It only ever picks up posts with status `scheduled`.
+
+GitHub disables cron on repos with no commits for 60 days. If a scheduled post
+silently doesn't go out, check that first — push anything to re-arm it.
 
 ---
 
