@@ -1,0 +1,36 @@
+name: GenWear daily Instagram post
+
+on:
+  schedule:
+    - cron: "30 4 * * *"
+  workflow_dispatch:
+    inputs:
+      day:
+        description: "Force a specific campaign day (1-11). Blank = today's."
+        required: false
+      dry_run:
+        description: "Set to 1 to preview without publishing"
+        required: false
+        default: "0"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Publish today's post
+        env:
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          ASSET_BASE_URL: ${{ vars.ASSET_BASE_URL }}
+          CAMPAIGN_START: ${{ vars.CAMPAIGN_START }}
+          DRY_RUN: ${{ github.event.inputs.dry_run }}
+        run: |
+          if [ -n "${{ github.event.inputs.day }}" ]; then
+            python publish_daily.py --day "${{ github.event.inputs.day }}"
+          else
+            python publish_daily.py
+          fi
