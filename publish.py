@@ -6,6 +6,9 @@ Nothing publishes by itself. The workflow has no cron, and every post sits at
 status "hold" until you approve it:
 
   APPROVE   `--now <id>`  publishes that post immediately. This is the gate.
+
+Post types: a single image (default), a Reel (media_type REELS + file), or a
+carousel (media_type CAROUSEL + files: [...], 2-10 slides, images or videos).
   REVIEW    `--list`      shows the queue, publishes nothing.
   PREVIEW   `--dry-run`   prints the caption that would go out.
 
@@ -121,7 +124,11 @@ def show(q):
         when = p.get("publish_at", "—")
         if st == "scheduled" and p.get("publish_at") and parse_when(when) <= now:
             st = "DUE"
-        print(f"{p['id']:<22} {st:<10} {when:<18} {p['file']}")
+        if p.get("media_type") == "CAROUSEL":
+            what = f"carousel × {len(p.get('files', []))}"
+        else:
+            what = p.get("file", "?")
+        print(f"{p['id']:<22} {st:<10} {when:<18} {what}")
 
 
 # ---------------------------------------------------------------- publish
@@ -139,25 +146,51 @@ def wait_ready(cid, token, tries, delay=6):
     raise SystemExit("Container never reached FINISHED")
 
 
+def child_container(url, ig_id, token):
+    """One slide of a carousel. Videos are allowed as children too."""
+    kind = "video_url" if url.lower().endswith((".mp4", ".mov")) else "image_url"
+    params = {kind: url, "is_carousel_item": "true", "access_token": token}
+    if kind == "video_url":
+        params["media_type"] = "VIDEO"
+    cid = post(f"{ig_id}/media", **params)["id"]
+    wait_ready(cid, token, tries=40 if kind == "video_url" else 20)
+    return cid
+
+
 def publish(entry, ig_id, token, base_url):
     base = base_url.rstrip("/") + "/"
-    url = urllib.parse.urljoin(base, entry["file"])
-    is_reel = entry.get("media_type") == "REELS"
+    kind = entry.get("media_type", "IMAGE")
 
     print(f"[{entry['id']}] {entry.get('slot', '')}")
-    print(f"  {'video' if is_reel else 'image'}: {url}")
 
-    params = dict(caption=entry["caption"], access_token=token)
-    if is_reel:
-        params.update(media_type="REELS", video_url=url, share_to_feed="true")
-        if entry.get("cover"):
-            params["cover_url"] = urllib.parse.urljoin(base, entry["cover"])
+    if kind == "CAROUSEL":
+        slides = entry.get("files") or []
+        if not 2 <= len(slides) <= 10:
+            raise SystemExit(f"Carousel needs 2-10 slides, got {len(slides)}")
+        children = []
+        for i, fn in enumerate(slides, 1):
+            u = urllib.parse.urljoin(base, fn)
+            print(f"  slide {i}/{len(slides)}: {fn}")
+            children.append(child_container(u, ig_id, token))
+        cid = post(f"{ig_id}/media", media_type="CAROUSEL",
+                   children=",".join(children),
+                   caption=entry["caption"], access_token=token)["id"]
+        print(f"  carousel container: {cid}")
+        wait_ready(cid, token, tries=30)
     else:
-        params["image_url"] = url
-
-    cid = post(f"{ig_id}/media", **params)["id"]
-    print(f"  container: {cid}")
-    wait_ready(cid, token, tries=40 if is_reel else 20)
+        url = urllib.parse.urljoin(base, entry["file"])
+        is_reel = kind == "REELS"
+        print(f"  {'video' if is_reel else 'image'}: {url}")
+        params = dict(caption=entry["caption"], access_token=token)
+        if is_reel:
+            params.update(media_type="REELS", video_url=url, share_to_feed="true")
+            if entry.get("cover"):
+                params["cover_url"] = urllib.parse.urljoin(base, entry["cover"])
+        else:
+            params["image_url"] = url
+        cid = post(f"{ig_id}/media", **params)["id"]
+        print(f"  container: {cid}")
+        wait_ready(cid, token, tries=40 if is_reel else 20)
 
     media_id = post(f"{ig_id}/media_publish", creation_id=cid,
                     access_token=token)["id"]
@@ -198,7 +231,10 @@ def main():
 
     if args.dry_run or os.environ.get("DRY_RUN") == "1":
         print(f"[dry run] would publish '{entry['id']}' — {entry.get('slot','')}")
-        print(f"[dry run] file: {entry['file']}")
+        if entry.get("media_type") == "CAROUSEL":
+            print(f"[dry run] carousel: {', '.join(entry.get('files', []))}")
+        else:
+            print(f"[dry run] file: {entry['file']}")
         print(f"[dry run] caption:\n{entry['caption']}\n")
         return
 
