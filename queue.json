@@ -51,6 +51,24 @@
       "publish_at": "2026-08-14 11:00"
     },
     {
+      "id": "diy-carousel",
+      "slot": "CAROUSEL — you can do this yourself",
+      "media_type": "CAROUSEL",
+      "files": [
+        "d1_cover.jpg",
+        "d2_prompt.jpg",
+        "d3_drift.jpg",
+        "d4_whatmoved.jpg",
+        "d5_point.jpg",
+        "d6_fixed.jpg",
+        "d7_cta.jpg"
+      ],
+      "file": "d1_cover.jpg",
+      "caption": "You do not need us to make an AI model shot. You need us to make the same one twice.\n\nHere is the test, run in the open. One prompt describing a sage green block-print kurta. Four runs, back to back, nothing edited, nothing cherry-picked.\n\nFour different kurtas came back. The motif changed. A hem border appeared and then vanished. The placket moved. New model, new room, new light every time.\n\nEvery one of them is a nice photograph. Not one of them is a product you can sell, because your customer is buying one specific kurta — the one in your warehouse, with your print, your buttons, your hem. A catalogue cannot be built out of four near-misses, and re-prompting does not fix it. The tool has nothing to anchor to.\n\nSlide 6 is the same prompt with an anchor: one reference image, then poses generated against it. Same leaf motif, same spacing, same gold placket, every frame. That is the entire difference, and it is the thing GenWear is actually built to do — except the anchor is your product photo, not something we invented.\n\nTwo things we are being upfront about: these ran on Gemini 3 Pro Image, and the reference in slide 6 was itself generated rather than shot. We have not run the same four-run test on ChatGPT or Midjourney.\n\nIf you have — post what you got. We would like to see it.\n\n— GenWear",
+      "first_comment": "#aiphotoshoot #productphotography #catalogshoot #ecommercephotography #d2cindia #dtcbrands #apparelbrand #fashiontech #kurta #ethnicwear #indianfashion #generativeai #aiforbusiness #fashionbusiness #startupindia #productphotographyindia #shopifyindia #onlinestore",
+      "status": "hold"
+    },
+    {
       "id": "print-proof",
       "slot": "PROOF — hero print test",
       "publish_at": "2026-08-18 10:00",
