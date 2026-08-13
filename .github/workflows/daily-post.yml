@@ -12,6 +12,8 @@ on:
   schedule:
     - cron: "30 5 * * *"   # 11:00 IST
     - cron: "45 5 * * *"   # 11:15 IST — retry if the first was delayed
+    - cron: "30 12 * * *"  # 18:00 IST
+    - cron: "45 12 * * *"  # 18:15 IST — retry
   workflow_dispatch:
     inputs:
       now:
