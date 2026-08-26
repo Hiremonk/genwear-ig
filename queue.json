@@ -116,6 +116,25 @@
       "media_id": "18439263532131059"
     },
     {
+      "id": "colorswap-launch",
+      "slot": "CAROUSEL — colour swap feature launch",
+      "media_type": "CAROUSEL",
+      "files": [
+        "c1_cover.jpg",
+        "c2_ritual.jpg",
+        "c3_math.jpg",
+        "c4_proof.jpg",
+        "c5_zoom.jpg",
+        "c6_nothue.jpg",
+        "c7_cta.jpg"
+      ],
+      "file": "c1_cover.jpg",
+      "publish_at": "2026-08-27 11:00",
+      "status": "scheduled",
+      "caption": "Colour swap is live in GenWear.\n\nA camera photographs objects, not SKUs. That one fact is why a five-colour style quietly becomes five photoshoots — five samples chased from the dyer, five lots of shipping, five steaming sessions, five retouching queues. Most brands give up somewhere around the second colour and let the rest launch on a swatch thumbnail.\n\nSwipe 4 is the whole feature. One green kurta was photographed. The on-model shoot came from that photo. The mauve came from a colour reference — never sampled, never shipped, never shot.\n\nSwipe 5 is where you should be sceptical, so zoom in. The notch in the mandarin collar, the placket stitch, the button, the fold at the shoulder — all in the same place. A hue slider cannot do that. It flattens the weave and muddies the shadows, which is exactly why recoloured product photos look recoloured. A swap regenerates the photograph in the new colour instead.\n\nWhat it changes for a drop: 30 styles at five colours is 150 shoots the old way and 30 the new way. Photos stop waiting on the slowest dye lot, and your mustard gets the same on-model treatment as your hero black.\n\nOne thing we would tell you either way — the swap tracks the reference you give it, so check the output against your physical fabric before it goes on a product page. Colour is the thing your customer measures you on the moment the parcel opens.\n\nLive on every plan. New accounts get 120 free credits, roughly two on-model shoots.\n\nGarment: Cotton Culture.\n\n— GenWear",
+      "first_comment": "#colorswap #productphotography #ecommercephotography #catalogshoot #productphotographyindia #apparelbrand #d2cindia #dtcbrands #shopifyindia #aiphotoshoot #fashiontech #kurta #ethnicwear #indianfashion #colorways #retailtech #fashionbusiness #onlinestore"
+    },
+    {
       "id": "print-proof",
       "slot": "PROOF — hero print test",
       "publish_at": "2026-08-18 10:00",
